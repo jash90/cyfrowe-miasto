@@ -3,15 +3,14 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useRef, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import {
-    KeyboardAvoidingView,
-    Platform,
+    ImageBackground,
     Pressable,
-    ScrollView,
     StyleSheet,
     Text,
     TextInput,
-    View
+    View,
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import Button from '@/components/Button';
 import FloatingLabelInput from '@/components/FloatingLabelInput';
@@ -20,6 +19,7 @@ import Spacer from '@/components/Spacer';
 import TouchIdButton from '@/components/TouchIdButton';
 import { CheckIcon } from '@/components/icons';
 import { Feather } from '@expo/vector-icons';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { EMAIL_REGEX, PHONE_REGEX } from '@/constants/validation';
 
@@ -43,6 +43,8 @@ const passwordRules = {
 
 const Login = () => {
     const router = useRouter();
+    const { bottom } = useSafeAreaInsets();
+    const [headerHeight, setHeaderHeight] = useState(0);
     const [secureTextEntry, setSecureTextEntry] = useState(true);
 
     const passwordRef = useRef<TextInput>(null);
@@ -65,114 +67,123 @@ const Login = () => {
     };
 
     return (
-        <View style={styles.root}>
-            <StatusBar style="light" />
-            <LoginHeader onBack={handleBack} />
+        <ImageBackground
+            source={require('@/assets/images/background.png')}
+            style={StyleSheet.absoluteFill}
+        >
+            <SafeAreaView style={styles.root} edges={['top']}>
+                <StatusBar style="light" />
 
-            <KeyboardAvoidingView
-                style={styles.card}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            >
-                <ScrollView
-                    contentContainerStyle={styles.scrollContent}
+                <KeyboardAwareScrollView
+                    style={styles.root}
+                    contentContainerStyle={styles.scrollContainer}
                     keyboardShouldPersistTaps="handled"
                     showsVerticalScrollIndicator={false}
+                    enableOnAndroid
+                    extraScrollHeight={20}
                 >
-                    <Text style={styles.heading}>Witamy ponownie</Text>
-
-                    <View style={styles.form}>
-                        <Controller
-                            control={control}
-                            name="email"
-                            rules={emailRules}
-                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                                <View>
-                                    <FloatingLabelInput
-                                        label="Adres e-mail lub numer telefonu"
-                                        value={value}
-                                        onChangeText={onChange}
-                                        onBlur={onBlur}
-                                        error={!!error}
-                                        keyboardType="email-address"
-                                        autoCapitalize="none"
-                                        returnKeyType="next"
-                                        onSubmitEditing={focusPassword}
-                                        submitBehavior="submit"
-                                        trailingIcon={
-                                            !error && value.length > 0
-                                                ? <CheckIcon size={20} color="#08891D" />
-                                                : undefined
-                                        }
-                                    />
-                                    {error && (
-                                        <Text style={styles.errorText}>{error.message}</Text>
-                                    )}
-                                </View>
-                            )}
-                        />
-
-                        <Controller
-                            control={control}
-                            name="password"
-                            rules={passwordRules}
-                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                                <View>
-                                    <FloatingLabelInput
-                                        ref={passwordRef}
-                                        label="Hasło"
-                                        value={value}
-                                        onChangeText={onChange}
-                                        onBlur={onBlur}
-                                        error={!!error}
-                                        secureTextEntry={secureTextEntry}
-                                        returnKeyType="go"
-                                        onSubmitEditing={handleSubmit(onSubmit)}
-                                        trailingIcon={
-                                            <Pressable onPress={toggleSecureEntry}>
-                                                <Feather name={secureTextEntry ? 'eye-off' : 'eye'} size={20} color="#686C76" />
-                                            </Pressable>
-                                        }
-                                    />
-                                    {error ? (
-                                        <Text style={styles.errorText}>{error.message}</Text>
-                                    ) : (
-                                        <Text style={styles.helperText}>Minimalna długość hasła to 8 znaków</Text>
-                                    )}
-                                </View>
-                            )}
-                        />
+                    <View onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)}>
+                        <LoginHeader onBack={handleBack} />
                     </View>
 
-                    <Button title="Zaloguj się" onPress={handleSubmit(onSubmit)} />
+                    <View style={[styles.card, { top: headerHeight, paddingBottom: 40 + bottom }]}>
+                        <Text style={styles.heading}>Witamy ponownie</Text>
 
-                    <Button title="Zapomniałeś hasła?" variant="text" />
+                        <View style={styles.form}>
+                            <Controller
+                                control={control}
+                                name="email"
+                                rules={emailRules}
+                                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                                    <View>
+                                        <FloatingLabelInput
+                                            label="Adres e-mail lub numer telefonu"
+                                            value={value}
+                                            onChangeText={onChange}
+                                            onBlur={onBlur}
+                                            error={!!error}
+                                            keyboardType="email-address"
+                                            autoCapitalize="none"
+                                            returnKeyType="next"
+                                            onSubmitEditing={focusPassword}
+                                            submitBehavior="submit"
+                                            trailingIcon={
+                                                !error && value.length > 0
+                                                    ? <CheckIcon size={20} color="#08891D" />
+                                                    : undefined
+                                            }
+                                        />
+                                        {error && (
+                                            <Text style={styles.errorText}>{error.message}</Text>
+                                        )}
+                                    </View>
+                                )}
+                            />
 
-                    <Spacer />
+                            <Controller
+                                control={control}
+                                name="password"
+                                rules={passwordRules}
+                                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                                    <View>
+                                        <FloatingLabelInput
+                                            ref={passwordRef}
+                                            label="Hasło"
+                                            value={value}
+                                            onChangeText={onChange}
+                                            onBlur={onBlur}
+                                            error={!!error}
+                                            secureTextEntry={secureTextEntry}
+                                            returnKeyType="go"
+                                            onSubmitEditing={handleSubmit(onSubmit)}
+                                            trailingIcon={
+                                                <Pressable onPress={toggleSecureEntry}>
+                                                    <Feather name={secureTextEntry ? 'eye-off' : 'eye'} size={20} color="#686C76" />
+                                                </Pressable>
+                                            }
+                                        />
+                                        {error ? (
+                                            <Text style={styles.errorText}>{error.message}</Text>
+                                        ) : (
+                                            <Text style={styles.helperText}>Minimalna długość hasła to 8 znaków</Text>
+                                        )}
+                                    </View>
+                                )}
+                            />
+                        </View>
 
-                    <TouchIdButton />
-                </ScrollView>
-            </KeyboardAvoidingView>
-        </View>
+                        <Button title="Zaloguj się" onPress={handleSubmit(onSubmit)} />
+
+                        <Button title="Zapomniałeś hasła?" variant="text" />
+
+                        <Spacer />
+
+                        <TouchIdButton />
+                    </View>
+                </KeyboardAwareScrollView>
+            </SafeAreaView>
+        </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
     root: {
         flex: 1,
-        backgroundColor: '#126ae9',
+    },
+    scrollContainer: {
+        flexGrow: 1,
     },
     card: {
-        flex: 1,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
         backgroundColor: '#FFFFFF',
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
         borderCurve: 'continuous',
-    },
-    scrollContent: {
-        flexGrow: 1,
         paddingHorizontal: 16,
         paddingTop: 32,
-        paddingBottom: 40,
     },
     heading: {
         fontFamily: 'Figtree-Bold',

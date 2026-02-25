@@ -1,7 +1,5 @@
-import { Image } from 'expo-image';
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import City from '@/components/City';
 import Logo from '@/components/Logo';
@@ -13,20 +11,13 @@ type LoginHeaderProps = {
 
 const LoginHeader = ({ onBack }: LoginHeaderProps) => (
     <View style={styles.header}>
-        <Image
-            source={require('@/assets/images/background.png')}
-            style={StyleSheet.absoluteFill}
-            contentFit="cover"
-        />
-        <SafeAreaView edges={['top']}>
-            <View style={styles.headerContent}>
-                <Pressable onPress={onBack} style={styles.backButton}>
-                    <ArrowLeftIcon size={20} color="#FFFFFF" />
-                </Pressable>
-                <Logo color="white" />
-                <View style={styles.backButton} />
-            </View>
-        </SafeAreaView>
+        <View style={styles.headerContent}>
+            <Pressable onPress={onBack} style={styles.backButton}>
+                <ArrowLeftIcon size={20} color="#FFFFFF" />
+            </Pressable>
+            <Logo color="white" />
+            <View style={styles.backButton} />
+        </View>
         <City />
     </View>
 );
