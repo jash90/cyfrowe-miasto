@@ -1,18 +1,19 @@
-import React from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
-import { usePulseAnimation } from '@/hooks';
+import usePulseAnimation from '../hooks/usePulseAnimation';
 import { TouchIdIcon } from '@/components/icons';
+import { colors } from '@/theme';
 
 const TouchIdButton = () => {
-    const pulseAnim = usePulseAnimation();
+    const pulseStyle = usePulseAnimation();
 
     return (
         <View style={styles.wrapper}>
             <View style={styles.container}>
-                <Animated.View style={[styles.ring, { transform: [{ scale: pulseAnim }] }]} />
+                <Animated.View style={[styles.ring, pulseStyle]} />
                 <View style={styles.button}>
-                    <TouchIdIcon size={24} color="#FFFFFF" />
+                    <TouchIdIcon size={24} color={colors.white} />
                 </View>
             </View>
         </View>
@@ -30,14 +31,14 @@ const styles = StyleSheet.create({
         bottom: 0,
         borderRadius: 38,
         borderCurve: 'continuous',
-        backgroundColor: 'rgba(18,106,233,0.2)',
+        backgroundColor: colors.primaryLight,
     },
     button: {
         width: 56,
         height: 56,
         borderRadius: 28,
         borderCurve: 'continuous',
-        backgroundColor: '#126ae9',
+        backgroundColor: colors.primary,
         justifyContent: 'center',
         alignItems: 'center',
     },

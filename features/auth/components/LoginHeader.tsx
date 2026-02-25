@@ -1,9 +1,8 @@
-import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import City from '@/components/City';
-import Logo from '@/components/Logo';
+import { City, Logo } from '@/components';
 import { ArrowLeftIcon } from '@/components/icons';
+import { colors } from '@/theme';
 
 type LoginHeaderProps = {
     onBack: () => void;
@@ -13,7 +12,7 @@ const LoginHeader = ({ onBack }: LoginHeaderProps) => (
     <View style={styles.header}>
         <View style={styles.headerContent}>
             <Pressable onPress={onBack} style={styles.backButton}>
-                <ArrowLeftIcon size={20} color="#FFFFFF" />
+                <ArrowLeftIcon size={20} color={colors.white} />
             </Pressable>
             <Logo color="white" />
             <View style={styles.backButton} />

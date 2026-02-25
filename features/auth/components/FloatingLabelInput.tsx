@@ -1,12 +1,13 @@
-import React from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import {
-    Animated,
     StyleSheet,
     TextInput,
     TextInputProps,
     View,
 } from 'react-native';
-import { useFloatingLabel } from '@/hooks';
+import Animated from 'react-native-reanimated';
+import useFloatingLabel from '../hooks/useFloatingLabel';
+import { colors, typography } from '@/theme';
 
 type FloatingLabelInputProps = {
     label: string;
@@ -14,26 +15,18 @@ type FloatingLabelInputProps = {
     onChangeText: (text: string) => void;
     onBlur: () => void;
     error?: boolean;
-    trailingIcon?: React.ReactNode;
+    trailingIcon?: ReactNode;
 } & Omit<TextInputProps, 'style' | 'onFocus' | 'onBlur'>;
 
-const FloatingLabelInput = React.forwardRef<TextInput, FloatingLabelInputProps>(
+const FloatingLabelInput = forwardRef<TextInput, FloatingLabelInputProps>(
     ({ label, value, onChangeText, onBlur, error, trailingIcon, ...rest }, ref) => {
-        const { animatedTranslateY, animatedScale, handleFocus, handleBlur } =
+        const { labelAnimatedStyle, handleFocus, handleBlur } =
             useFloatingLabel({ hasValue: value.length > 0, onBlur });
 
         return (
             <View style={[styles.container, error && styles.containerError]}>
                 <Animated.Text
-                    style={[
-                        styles.floatingLabel,
-                        {
-                            transform: [
-                                { translateY: animatedTranslateY },
-                                { scale: animatedScale },
-                            ],
-                        },
-                    ]}
+                    style={[styles.floatingLabel, labelAnimatedStyle]}
                     pointerEvents="none"
                 >
                     {label}
@@ -46,7 +39,7 @@ const FloatingLabelInput = React.forwardRef<TextInput, FloatingLabelInputProps>(
                         onChangeText={onChangeText}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
-                        placeholderTextColor="#686C76"
+                        placeholderTextColor={colors.textMuted}
                         {...rest}
                     />
                 </View>
@@ -64,7 +57,7 @@ FloatingLabelInput.displayName = 'FloatingLabelInput';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#F2F3F4',
+        backgroundColor: colors.inputBg,
         borderRadius: 10,
         borderCurve: 'continuous',
         paddingHorizontal: 16,
@@ -74,7 +67,7 @@ const styles = StyleSheet.create({
     },
     containerError: {
         borderWidth: 1,
-        borderColor: '#D92D20',
+        borderColor: colors.textError,
     },
     floatingLabel: {
         position: 'absolute',
@@ -82,7 +75,7 @@ const styles = StyleSheet.create({
         top: 21,
         fontSize: 16,
         lineHeight: 22,
-        color: '#686C76',
+        color: colors.textMuted,
         fontFamily: 'Figtree-Regular',
         letterSpacing: -0.12,
         transformOrigin: '0% 50%',
@@ -93,11 +86,8 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
-        fontFamily: 'Figtree-Regular',
-        fontSize: 16,
-        lineHeight: 22,
-        color: '#172029',
-        letterSpacing: -0.16,
+        ...typography.input,
+        color: colors.textDark,
         padding: 0,
     },
     inputWithTrailing: {

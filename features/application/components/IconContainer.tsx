@@ -1,12 +1,15 @@
-import React from 'react';
+import type { ComponentType } from 'react';
 import { StyleSheet, View } from 'react-native';
+
+import type { IconProps } from '@/components/icons';
+import { colors } from '@/theme';
 
 interface IconContainerProps {
     backgroundColor?: string;
-    Component: React.ComponentType<any>;
+    Component: ComponentType<IconProps>;
 }
 
-const IconContainer = ({ Component, backgroundColor = '#DBE9FC' }: IconContainerProps) => {
+const IconContainer = ({ Component, backgroundColor = colors.primaryIconBg }: IconContainerProps) => {
     return (
         <View style={[styles.container, { backgroundColor }]}>
             <Component />
