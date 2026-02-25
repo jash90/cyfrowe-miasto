@@ -7,8 +7,8 @@ export default function RootLayout() {
   return (
     <>
       <Stack>
-        <Stack.Screen name="login" />
-        <Stack.Screen name="application-for-card" />
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="application-for-card" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />
     </>
