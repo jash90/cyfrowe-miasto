@@ -1,9 +1,5 @@
 import Svg, { Path } from 'react-native-svg';
-
-interface IconProps {
-  size?: number;
-  color?: string;
-}
+import type { IconProps } from './types';
 
 const NextIcon = ({ size = 12, color = '#686C76' }: IconProps) => (
   <Svg width={(size * 7) / 12} height={size} viewBox="0 0 7 12" fill="none">

@@ -1,9 +1,5 @@
 import Svg, { Path } from 'react-native-svg';
-
-interface IconProps {
-  size?: number;
-  color?: string;
-}
+import type { IconProps } from './types';
 
 const EditIcon = ({ size = 24, color = '#126AE9' }: IconProps) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">

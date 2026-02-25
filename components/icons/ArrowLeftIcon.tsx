@@ -1,9 +1,5 @@
 import Svg, { Path } from 'react-native-svg';
-
-interface IconProps {
-  size?: number;
-  color?: string;
-}
+import type { IconProps } from './types';
 
 const ArrowLeftIcon = ({ size = 20, color = '#FFFFFF' }: IconProps) => (
   <Svg width={size} height={size} viewBox="0 0 20 20" fill="none">
