@@ -1,5 +1,6 @@
-import React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
+
+import { colors, typography } from '@/theme';
 
 interface ButtonProps {
     title: string;
@@ -25,20 +26,16 @@ const Button = ({ title, onPress, variant = 'primary' }: ButtonProps) => {
 
 const styles = StyleSheet.create({
     primary: {
-        backgroundColor: '#126ae9',
+        backgroundColor: colors.primary,
         borderRadius: 100,
         borderCurve: 'continuous',
         height: 56,
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 12,
     },
     primaryText: {
-        fontFamily: 'Figtree-Medium',
-        fontSize: 16,
-        lineHeight: 22,
-        color: '#FFFFFF',
-        letterSpacing: -0.32,
+        ...typography.bodyLarge,
+        color: colors.white,
     },
     text: {
         alignItems: 'center',
@@ -48,11 +45,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
     },
     textText: {
-        fontFamily: 'Figtree-Medium',
-        fontSize: 16,
-        lineHeight: 22,
-        color: '#126ae9',
-        letterSpacing: -0.32,
+        ...typography.bodyLarge,
+        color: colors.primary,
     },
 });
 

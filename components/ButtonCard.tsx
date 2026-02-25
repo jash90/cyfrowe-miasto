@@ -1,9 +1,11 @@
-import { NextIcon } from '@/components/icons';
-import React from 'react';
+import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { NextIcon } from '@/components/icons';
+import { colors, typography } from '@/theme';
+
 interface ButtonCardProps {
-    icon: React.ReactNode;
+    icon: ReactNode;
     title: string;
     description: string;
     badge?: string;
@@ -20,11 +22,11 @@ const ButtonCard = ({ icon, title, description, badge, onPress }: ButtonCardProp
                 {icon}
             </View>
             <View style={styles.cardContent}>
-                {badge && (
+                {badge ? (
                     <View style={styles.badge}>
                         <Text style={styles.badgeText}>{badge}</Text>
                     </View>
-                )}
+                ) : null}
                 <Text style={styles.cardTitle}>{title}</Text>
                 <Text style={styles.cardDescription}>{description}</Text>
             </View>
@@ -35,9 +37,9 @@ const ButtonCard = ({ icon, title, description, badge, onPress }: ButtonCardProp
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.white,
         borderWidth: 1,
-        borderColor: '#EFF0F4',
+        borderColor: colors.border,
         borderRadius: 12,
         borderCurve: 'continuous',
         padding: 16,
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
     },
     badge: {
         alignSelf: 'flex-start',
-        backgroundColor: '#D6EBFF',
+        backgroundColor: colors.primaryBadgeBg,
         borderRadius: 100,
         borderCurve: 'continuous',
         paddingHorizontal: 8,
@@ -65,22 +67,16 @@ const styles = StyleSheet.create({
         marginBottom: 4,
     },
     badgeText: {
-        fontFamily: 'Figtree-SemiBold',
-        fontSize: 12,
-        lineHeight: 16,
-        color: '#0464D0',
+        ...typography.badgeLabel,
+        color: colors.primaryBadgeText,
     },
     cardTitle: {
-        fontFamily: 'Figtree-Medium',
-        fontSize: 16,
-        lineHeight: 22,
-        color: '#172029',
+        ...typography.cardTitle,
+        color: colors.textDark,
     },
     cardDescription: {
-        fontFamily: 'Figtree-Regular',
-        fontSize: 12,
-        lineHeight: 16,
-        color: '#686C76',
+        ...typography.caption,
+        color: colors.textMuted,
     },
 });
 

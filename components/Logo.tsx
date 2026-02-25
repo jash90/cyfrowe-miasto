@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
-import React from 'react';
+import { StyleSheet } from 'react-native';
 
-interface LogoBlueProps {
+interface LogoProps {
     width?: number;
     height?: number;
     color?: 'blue' | 'white';
@@ -10,8 +10,19 @@ interface LogoBlueProps {
 const logoBlue = require('@/assets/images/logo-blue.png');
 const logoWhite = require('@/assets/images/logo-white.png');
 
-const Logo = ({ width = 210, height = 40, color = 'blue' }: LogoBlueProps) => {
-    return <Image source={color === 'blue' ? logoBlue : logoWhite} style={{ width, height, marginVertical: 12 }} />
-}
+const Logo = ({ width = 210, height = 40, color = 'blue' }: LogoProps) => {
+    return (
+        <Image
+            source={color === 'blue' ? logoBlue : logoWhite}
+            style={[styles.logo, { width, height }]}
+        />
+    );
+};
 
-export default Logo
+const styles = StyleSheet.create({
+    logo: {
+        marginVertical: 12,
+    },
+});
+
+export default Logo;
