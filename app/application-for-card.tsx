@@ -1,13 +1,11 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import ButtonCard from '@/components/ButtonCard';
-import City from '@/components/City';
-import IconContainer from '@/components/IconContainer';
-import ImageIcon from '@/components/ImageIcon';
-import Logo from '@/components/Logo';
+import { colors, typography } from '@/theme';
+import { ButtonCard, City, Logo } from '@/components';
 import { EditIcon } from '@/components/icons';
+import IconContainer from '@/features/application/components/IconContainer';
+import ImageIcon from '@/features/application/components/ImageIcon';
 
 const ApplicationForCard = () => {
     return (
@@ -23,7 +21,7 @@ const ApplicationForCard = () => {
             </View>
             <View style={styles.cards}>
                 <ButtonCard
-                    icon={<ImageIcon source={require('../assets/images/emblem.png')} />}
+                    icon={<ImageIcon source={require('@/assets/images/emblem.png')} />}
                     title="Użyj danych z mObywatel"
                     description="Szybkie składanie wniosku za pomocą aplikacji mObywatel"
                     badge="Najszybciej"
@@ -41,7 +39,7 @@ const ApplicationForCard = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.white,
         alignItems: 'center',
     },
     content: {
@@ -55,25 +53,18 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     greeting: {
-        fontFamily: 'Figtree-Regular',
-        fontSize: 14,
-        lineHeight: 18,
-        color: '#686C76',
+        ...typography.bodySmall,
+        color: colors.textMuted,
         textAlign: 'center',
     },
     title: {
-        fontFamily: 'Figtree-Bold',
-        fontSize: 28,
-        lineHeight: 32,
-        letterSpacing: -0.84,
-        color: '#172029',
+        ...typography.heading,
+        color: colors.textDark,
         textAlign: 'center',
     },
     description: {
-        fontFamily: 'Figtree-Regular',
-        fontSize: 14,
-        lineHeight: 18,
-        color: '#686C76',
+        ...typography.bodySmall,
+        color: colors.textMuted,
         textAlign: 'center',
         maxWidth: 320,
     },

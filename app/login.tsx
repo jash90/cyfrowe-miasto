@@ -1,70 +1,32 @@
-import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground } from 'expo-image';
 import { StatusBar } from 'expo-status-bar';
-import React, { useRef, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import {
-    ImageBackground,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-} from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-import Button from '@/components/Button';
-import FloatingLabelInput from '@/components/FloatingLabelInput';
-import LoginHeader from '@/components/LoginHeader';
-import Spacer from '@/components/Spacer';
-import TouchIdButton from '@/components/TouchIdButton';
-import { CheckIcon } from '@/components/icons';
-import { Feather } from '@expo/vector-icons';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Controller } from 'react-hook-form';
 
-import { EMAIL_REGEX, PHONE_REGEX } from '@/constants/validation';
-
-type FormData = {
-    email: string;
-    password: string;
-};
-
-const emailRules = {
-    required: 'Podaj adres e-mail lub numer telefonu',
-    validate: (value: string) =>
-        EMAIL_REGEX.test(value) || PHONE_REGEX.test(value)
-            ? true
-            : 'Podaj poprawny adres e-mail lub numer telefonu',
-};
-
-const passwordRules = {
-    required: 'Podaj hasło',
-    minLength: { value: 8, message: 'Hasło musi mieć co najmniej 8 znaków' },
-};
+import { colors, typography } from '@/theme';
+import { Button, Spacer } from '@/components';
+import { CheckIcon, EyeIcon, EyeOffIcon } from '@/components/icons';
+import { LoginHeader } from '@/features/auth';
+import { emailRules, passwordRules } from '@/features/auth/constants';
+import { useLoginForm } from '@/features/auth/hooks/useLoginForm';
+import TouchIdButton from '@/features/auth/components/TouchIdButton';
+import FloatingLabelInput from '@/features/auth/components/FloatingLabelInput';
 
 const Login = () => {
-    const router = useRouter();
-    const { bottom } = useSafeAreaInsets();
     const [headerHeight, setHeaderHeight] = useState(0);
-    const [secureTextEntry, setSecureTextEntry] = useState(true);
-
-    const passwordRef = useRef<TextInput>(null);
-
     const {
         control,
         handleSubmit,
-    } = useForm<FormData>({
-        defaultValues: { email: '', password: '' },
-        mode: 'onTouched',
-    });
-
-    // TODO: I didn't know what the back button was supposed to point to
-    const handleBack = () => { console.log('back'); };
-    const focusPassword = () => passwordRef.current?.focus();
-    const toggleSecureEntry = () => setSecureTextEntry(prev => !prev);
-
-    const onSubmit: SubmitHandler<FormData> = () => {
-        router.push('/application-for-card');
-    };
+        secureTextEntry,
+        toggleSecureEntry,
+        passwordRef,
+        focusPassword,
+        onSubmit,
+    } = useLoginForm();
+    const { bottom } = useSafeAreaInsets();
 
     return (
         <ImageBackground
@@ -73,7 +35,6 @@ const Login = () => {
         >
             <SafeAreaView style={styles.root} edges={['top']}>
                 <StatusBar style="light" />
-
                 <KeyboardAwareScrollView
                     style={styles.root}
                     contentContainerStyle={styles.scrollContainer}
@@ -83,12 +44,10 @@ const Login = () => {
                     extraScrollHeight={20}
                 >
                     <View onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)}>
-                        <LoginHeader onBack={handleBack} />
+                        <LoginHeader onBack={() => console.log('back')} />
                     </View>
-
                     <View style={[styles.card, { top: headerHeight, paddingBottom: 40 + bottom }]}>
                         <Text style={styles.heading}>Witamy ponownie</Text>
-
                         <View style={styles.form}>
                             <Controller
                                 control={control}
@@ -109,7 +68,7 @@ const Login = () => {
                                             submitBehavior="submit"
                                             trailingIcon={
                                                 !error && value.length > 0
-                                                    ? <CheckIcon size={20} color="#08891D" />
+                                                    ? <CheckIcon size={20} color={colors.textSuccess} />
                                                     : undefined
                                             }
                                         />
@@ -119,7 +78,6 @@ const Login = () => {
                                     </View>
                                 )}
                             />
-
                             <Controller
                                 control={control}
                                 name="password"
@@ -138,7 +96,10 @@ const Login = () => {
                                             onSubmitEditing={handleSubmit(onSubmit)}
                                             trailingIcon={
                                                 <Pressable onPress={toggleSecureEntry}>
-                                                    <Feather name={secureTextEntry ? 'eye-off' : 'eye'} size={20} color="#686C76" />
+                                                    {secureTextEntry
+                                                        ? <EyeOffIcon size={20} color={colors.textMuted} />
+                                                        : <EyeIcon size={20} color={colors.textMuted} />
+                                                    }
                                                 </Pressable>
                                             }
                                         />
@@ -151,13 +112,11 @@ const Login = () => {
                                 )}
                             />
                         </View>
-
-                        <Button title="Zaloguj się" onPress={handleSubmit(onSubmit)} />
-
-                        <Button title="Zapomniałeś hasła?" variant="text" />
-
+                        <View style={styles.buttons}>
+                            <Button title="Zaloguj się" onPress={handleSubmit(onSubmit)} />
+                            <Button title="Zapomniałeś hasła?" variant="text" />
+                        </View>
                         <Spacer />
-
                         <TouchIdButton />
                     </View>
                 </KeyboardAwareScrollView>
@@ -178,7 +137,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.white,
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
         borderCurve: 'continuous',
@@ -186,11 +145,8 @@ const styles = StyleSheet.create({
         paddingTop: 32,
     },
     heading: {
-        fontFamily: 'Figtree-Bold',
-        fontSize: 28,
-        lineHeight: 32,
-        color: '#172029',
-        letterSpacing: -0.84,
+        ...typography.heading,
+        color: colors.textDark,
         textAlign: 'center',
         marginBottom: 20,
     },
@@ -198,18 +154,17 @@ const styles = StyleSheet.create({
         gap: 16,
         marginBottom: 16,
     },
+    buttons: {
+        gap: 12,
+    },
     helperText: {
-        fontFamily: 'Figtree-Regular',
-        fontSize: 12,
-        lineHeight: 16,
-        color: '#686C76',
+        ...typography.caption,
+        color: colors.textMuted,
         marginTop: 4,
     },
     errorText: {
-        fontFamily: 'Figtree-Regular',
-        fontSize: 12,
-        lineHeight: 16,
-        color: '#D92D20',
+        ...typography.caption,
+        color: colors.textError,
         marginTop: 4,
     },
 });
