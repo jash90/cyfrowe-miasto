@@ -1,3 +1,4 @@
+import { colors, typography } from '@/theme';
 import { forwardRef, type ReactNode } from 'react';
 import {
     StyleSheet,
@@ -7,7 +8,6 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import useFloatingLabel from '../hooks/useFloatingLabel';
-import { colors, typography } from '@/theme';
 
 type FloatingLabelInputProps = {
     label: string;
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         borderCurve: 'continuous',
         paddingHorizontal: 16,
         paddingBottom: 13,
-        height: 64,
+        height: 65,
         justifyContent: 'flex-end',
     },
     containerError: {

@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { ImageBackground } from 'expo-image';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { Controller } from 'react-hook-form';
 
 import { colors, typography } from '@/theme';
@@ -16,7 +15,6 @@ import TouchIdButton from '@/features/auth/components/TouchIdButton';
 import FloatingLabelInput from '@/features/auth/components/FloatingLabelInput';
 
 const Login = () => {
-    const [headerHeight, setHeaderHeight] = useState(0);
     const {
         control,
         handleSubmit,
@@ -40,13 +38,10 @@ const Login = () => {
                     contentContainerStyle={styles.scrollContainer}
                     keyboardShouldPersistTaps="handled"
                     showsVerticalScrollIndicator={false}
-                    enableOnAndroid
-                    extraScrollHeight={20}
+                    bottomOffset={20}
                 >
-                    <View onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)}>
-                        <LoginHeader onBack={() => console.log('back')} />
-                    </View>
-                    <View style={[styles.card, { top: headerHeight, paddingBottom: 40 + bottom }]}>
+                    <LoginHeader onBack={() => console.log('back')} />
+                    <View style={[styles.card, { paddingBottom: 40 + bottom }]}>
                         <Text style={styles.heading}>Witamy ponownie</Text>
                         <View style={styles.form}>
                             <Controller
@@ -133,10 +128,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     card: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
+        flex: 1,
         backgroundColor: colors.white,
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
