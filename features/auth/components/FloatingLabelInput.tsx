@@ -1,4 +1,4 @@
-import { colors, typography } from '@/theme';
+import { colors, typography } from '@/features/shared/theme';
 import { forwardRef, type ReactNode } from 'react';
 import {
     StyleSheet,
@@ -64,9 +64,10 @@ const styles = StyleSheet.create({
         paddingBottom: 13,
         height: 65,
         justifyContent: 'flex-end',
+        borderWidth: 1,
+        borderColor: 'transparent',
     },
     containerError: {
-        borderWidth: 1,
         borderColor: colors.textError,
     },
     floatingLabel: {
@@ -83,6 +84,7 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         alignItems: 'center',
+        height: 25,
     },
     input: {
         flex: 1,
