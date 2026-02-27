@@ -1,18 +1,18 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { ImageBackground } from 'expo-image';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { Controller } from 'react-hook-form';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, typography } from '@/theme';
-import { Button, Spacer } from '@/components';
-import { CheckIcon, EyeIcon, EyeOffIcon } from '@/components/icons';
 import { LoginHeader } from '@/features/auth';
+import FloatingLabelInput from '@/features/auth/components/FloatingLabelInput';
+import TouchIdButton from '@/features/auth/components/TouchIdButton';
 import { emailRules, passwordRules } from '@/features/auth/constants';
 import { useLoginForm } from '@/features/auth/hooks/useLoginForm';
-import TouchIdButton from '@/features/auth/components/TouchIdButton';
-import FloatingLabelInput from '@/features/auth/components/FloatingLabelInput';
+import { Button, Spacer } from '@/features/shared/components';
+import { CheckIcon, EyeIcon, EyeOffIcon } from '@/features/shared/components/icons';
+import { colors, typography } from '@/features/shared/theme';
 
 const Login = () => {
     const {
@@ -42,6 +42,7 @@ const Login = () => {
                 >
                     <LoginHeader onBack={() => console.log('back')} />
                     <View style={[styles.card, { paddingBottom: 40 + bottom }]}>
+                        <View style={styles.cardBottomFill} />
                         <Text style={styles.heading}>Witamy ponownie</Text>
                         <View style={styles.form}>
                             <Controller
@@ -67,9 +68,9 @@ const Login = () => {
                                                     : undefined
                                             }
                                         />
-                                        {error && (
-                                            <Text style={styles.errorText}>{error.message}</Text>
-                                        )}
+                                        <Text style={error ? styles.errorText : styles.helperText}>
+                                            {error ? error.message : null}
+                                        </Text>
                                     </View>
                                 )}
                             />
@@ -135,6 +136,15 @@ const styles = StyleSheet.create({
         borderCurve: 'continuous',
         paddingHorizontal: 16,
         paddingTop: 32,
+        overflow: 'visible',
+    },
+    cardBottomFill: {
+        position: 'absolute',
+        bottom: -400,
+        left: 0,
+        right: 0,
+        height: 400,
+        backgroundColor: colors.white,
     },
     heading: {
         ...typography.heading,
