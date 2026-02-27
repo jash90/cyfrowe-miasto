@@ -1,9 +1,9 @@
 import { StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
+import { TouchIdIcon } from '@/features/shared/components/icons';
+import { colors } from '@/features/shared/theme';
 import usePulseAnimation from '../hooks/usePulseAnimation';
-import { TouchIdIcon } from '@/components/icons';
-import { colors } from '@/theme';
 
 const TouchIdButton = () => {
     const pulseStyle = usePulseAnimation();

@@ -6,7 +6,6 @@ export default function Spacer() {
 
 const styles = StyleSheet.create({
     spacer: {
-        flex: 1,
-        minHeight: 5,
+        height: 40,
     },
 });

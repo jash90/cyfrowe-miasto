@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { City, Logo } from '@/components';
-import { ArrowLeftIcon } from '@/components/icons';
-import { colors } from '@/theme';
+import { City, Logo } from '@/features/shared/components';
+import { ArrowLeftIcon } from '@/features/shared/components/icons';
+import { colors } from '@/features/shared/theme';
 
 type LoginHeaderProps = {
     onBack: () => void;

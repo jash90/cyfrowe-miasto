@@ -1,8 +1,8 @@
 import type { ComponentType } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import type { IconProps } from '@/components/icons';
-import { colors } from '@/theme';
+import type { IconProps } from '@/features/shared/components/icons';
+import { colors } from '@/features/shared/theme';
 
 interface IconContainerProps {
     backgroundColor?: string;
